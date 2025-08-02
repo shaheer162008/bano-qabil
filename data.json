@@ -1,0 +1,90 @@
+{
+  "students": [
+    {
+      "name": "Ali Khan",
+      "phone_number": "+923001234567",
+      "student_id": "XYZ001",
+      "faculty": "Computer Science",
+      "section": "A"
+    },
+    {
+      "name": "Sara Ahmed",
+      "phone_number": "+923011234568",
+      "student_id": "XYZ002",
+      "faculty": "Electrical Engineering",
+      "section": "B"
+    },
+    {
+      "name": "Hassan Raza",
+      "phone_number": "+923021234569",
+      "student_id": "XYZ003",
+      "faculty": "Mechanical Engineering",
+      "section": "A"
+    },
+    {
+      "name": "Ayesha Malik",
+      "phone_number": "+923031234570",
+      "student_id": "XYZ004",
+      "faculty": "Business Administration",
+      "section": "C"
+    },
+    {
+      "name": "Usman Sheikh",
+      "phone_number": "+923041234571",
+      "student_id": "XYZ005",
+      "faculty": "Computer Science",
+      "section": "B"
+    },
+    {
+      "name": "Fatima Noor",
+      "phone_number": "+923051234572",
+      "student_id": "XYZ006",
+      "faculty": "Civil Engineering",
+      "section": "A"
+    },
+    {
+      "name": "Bilal Hussain",
+      "phone_number": "+923061234573",
+      "student_id": "XYZ007",
+      "faculty": "Electrical Engineering",
+      "section": "C"
+    },
+    {
+      "name": "Zainab Akram",
+      "phone_number": "+923071234574",
+      "student_id": "XYZ008",
+      "faculty": "Business Administration",
+      "section": "B"
+    },
+    {
+      "name": "Omar Farooq",
+      "phone_number": "+923081234575",
+      "student_id": "XYZ009",
+      "faculty": "Mechanical Engineering",
+      "section": "C"
+    },
+    {
+      "name": "Maryam Siddiqui",
+      "phone_number": "+923091234576",
+      "student_id": "XYZ010",
+      "faculty": "Civil Engineering",
+      "section": "A"
+    }
+  ],
+  "faculties": [
+    "Computer Science",
+    "Electrical Engineering",
+    "Mechanical Engineering",
+    "Business Administration",
+    "Civil Engineering"
+  ],
+  "sections": [
+    "A",
+    "B",
+    "C"
+  ],
+  "admin": {
+    "username": "bano-qabil.admin",
+    "password": "bano-qabil.admin@12345"
+  }
+} 
