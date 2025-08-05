@@ -32,7 +32,7 @@ export async function POST(request: Request) {
         section: student.section,
       },
     })
-  } catch (error) {
+  } catch (error:any) {
     console.error("Error marking attendance:", error)
     return NextResponse.json(
       { error: error.message || "Failed to mark attendance" },

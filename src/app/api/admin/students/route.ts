@@ -8,6 +8,7 @@ export async function GET(request: Request) {
     await connectDB()
     const { searchParams } = new URL(request.url)
     const date = searchParams.get('date')
+    console.log(typeof(date))
     const faculty = searchParams.get('faculty')
     const section = searchParams.get('section')
     const search = searchParams.get('search')
@@ -31,9 +32,10 @@ export async function GET(request: Request) {
       const attendance = await Attendance.find({ 
         date,
         student_id: { 
-          $in: students.map(s => s.student_id) 
+          $in: students.map(s => s._id) 
         }
       }).lean()
+
 
       // Merge attendance with students
       return NextResponse.json({
@@ -41,7 +43,7 @@ export async function GET(request: Request) {
         students: students.map(student => ({
           ...student,
           attendance: attendance.find(a => 
-            a.student_id === student.student_id
+            a.student_id == student._id
           ) || null
         }))
       })

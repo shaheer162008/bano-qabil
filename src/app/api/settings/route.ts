@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server"
 import connectDB from "@/lib/db"
 import Settings from "@/models/Settings"
+import { getServerSession } from "next-auth"
 
 export async function GET() {
   try {

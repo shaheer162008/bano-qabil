@@ -1,10 +1,10 @@
 "use client"
 
 import { useState, useEffect, useCallback } from "react"
-import { Camera, CameraOff, Download, Loader2, CheckCircle2, XCircle } from "lucide-react"
+import { Camera, CameraOff, Download, Loader2, CheckCircle2, XCircle, Search } from "lucide-react"
 import { toast } from "sonner"
 import { format } from "date-fns"
-import { QRScanner } from "@/components/QRScanner"
+import { QRScanner } from "@/components/QrScanner"
 import { DatePicker } from "@/components/DatePicker"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -16,6 +16,7 @@ import {
   SelectContent,
   SelectItem,
 } from "@/components/ui/select"
+import DropdownCombo from "@/components/DropdownCombo"
 
 interface Student {
   _id: string
@@ -26,6 +27,7 @@ interface Student {
   attendance?: {
     date: string
     status: "present" | "absent"
+    loading?: boolean
   }
 }
 
@@ -100,11 +102,11 @@ export default function AdminPage() {
 
       const data = await res.json()
       
-      if (!res.ok) {
-        // Revert optimistic update
-        await fetchStudents()
-        throw new Error(data.message)
-      }
+      // if (!res.ok) {
+      //   // Revert optimistic update
+      //   await fetchStudents()
+      //   throw new Error(data.message)
+      // }
 
       // Play success sound
       const audio = new Audio("/sounds/success.mp3")
@@ -177,38 +179,16 @@ export default function AdminPage() {
     }
   }
 
-  // Update fetchStudents to use selectedDate
-  const fetchStudents = async () => {
-    try {
-      setLoading(true)
-      const params = new URLSearchParams()
-      if (selectedFaculty !== "_all") params.set("faculty", selectedFaculty)
-      if (selectedSection !== "_all") params.set("section", selectedSection)
-      if (search) params.set("search", search)
-      params.set("date", format(selectedDate, "yyyy-MM-dd"))
-
-      const res = await fetch(`/api/admin/students?${params}`)
-      if (!res.ok) throw new Error("Failed to fetch students")
-      
-      const data = await res.json()
-      setStudents(data.students)
-    } catch (error) {
-      toast.error("Failed to load students")
-    } finally {
-      setLoading(false)
-    }
+  const handleDataFromChild = (data: Student[]) => {
+    // Handle data from child component if needed
+    setStudents(data)
   }
-
-  useEffect(() => {
-    fetchStudents()
-  }, [selectedFaculty, selectedSection, search, selectedDate])
-
   return (
     <div className="p-4 md:p-6 max-w-7xl mx-auto space-y-6">
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold">Attendance</h1>
         <div className="flex items-center space-x-4">
-          <DatePicker date={selectedDate} onDateChange={setSelectedDate} />
+          <DatePicker date={selectedDate} onDateChange={()=>setSelectedDate} />
           <Button onClick={() => setShowScanner(!showScanner)}>
             {showScanner ? "Stop Scanner" : "Start Scanner"}
           </Button>
@@ -238,12 +218,14 @@ export default function AdminPage() {
           <CardTitle>Students</CardTitle>
         </CardHeader>
         <CardContent>
+          <DropdownCombo sendData={handleDataFromChild} date={selectedDate} setLoading={setLoading}/>
           {loading ? (
             <p>Loading...</p>
           ) : (
+            
             students.length > 0 ? (
               students.map((student) => (
-                <div key={student.student_id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                <div key={student.student_id} className="flex mb-4 items-center justify-between p-4 bg-gray-50 rounded-lg">
                   <div>
                     <h3 className="font-medium">{student.name}</h3>
                     <div className="space-y-1 text-sm text-gray-500">

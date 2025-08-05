@@ -20,6 +20,7 @@ import {
   SelectItem,
 } from "@/components/ui/select"
 import { toast } from "sonner"
+import DropdownCombo from "@/components/DropdownCombo"
 
 interface Student {
   _id: string
@@ -34,9 +35,9 @@ export default function StudentsPage() {
   const [students, setStudents] = useState<Student[]>([])
   const [editingStudent, setEditingStudent] = useState<Student | null>(null)
   const [loading, setLoading] = useState(false)
-  const [search, setSearch] = useState("")
-  const [selectedFaculty, setSelectedFaculty] = useState("_all")
-  const [selectedSection, setSelectedSection] = useState("_all")
+  // const [search, setSearch] = useState("")
+  // const [selectedFaculty, setSelectedFaculty] = useState("_all")
+  // const [selectedSection, setSelectedSection] = useState("_all")
   const [showAddDialog, setShowAddDialog] = useState(false)
   const [newStudent, setNewStudent] = useState({
     name: "",
@@ -89,35 +90,16 @@ export default function StudentsPage() {
 
       toast.success("Student added successfully")
       setShowAddDialog(false)
-      // Refresh students list
-      fetchStudents()
     } catch (error) {
       toast.error("Failed to add student")
     }
   }
-
-  useEffect(() => {
-    const fetchStudents = async () => {
-      try {
-        setLoading(true)
-        const params = new URLSearchParams()
-        if (selectedFaculty !== "_all") params.set("faculty", selectedFaculty)
-        if (selectedSection !== "_all") params.set("section", selectedSection)
-        if (search) params.set("search", search)
-
-        const res = await fetch(`/api/admin/students?${params}`)
-        if (!res.ok) throw new Error("Failed to fetch")
-        const data = await res.json()
-        setStudents(data.students)
-      } catch (error) {
-        toast.error("Failed to load students")
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    fetchStudents()
-  }, [search, selectedFaculty, selectedSection])
+  
+  const handleDataFromChild = (data: Student[]) => {
+    // Handle data from child component if needed
+    setStudents(data)
+  }
+  
 
   return (
     <div className="p-4 md:p-6 max-w-7xl mx-auto space-y-6">
@@ -163,51 +145,7 @@ export default function StudentsPage() {
           <CardTitle>Students List</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="grid gap-4 md:grid-cols-3">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
-              <Input
-                placeholder="Search students..."
-                className="pl-10"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-              />
-            </div>
-
-            <Select
-              value={selectedFaculty}
-              onValueChange={setSelectedFaculty}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="Select Faculty" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="_all">All Faculties</SelectItem>
-                <SelectItem value="Computer Science">Computer Science</SelectItem>
-                <SelectItem value="Electrical Engineering">Electrical Engineering</SelectItem>
-                <SelectItem value="Mechanical Engineering">Mechanical Engineering</SelectItem>
-                <SelectItem value="Civil Engineering">Civil Engineering</SelectItem>
-                <SelectItem value="Software Engineering">Software Engineering</SelectItem>
-              </SelectContent>
-            </Select>
-
-            <Select
-              value={selectedSection}
-              onValueChange={setSelectedSection}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="Select Section" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="_all">All Sections</SelectItem>
-                <SelectItem value="A">Section A</SelectItem>
-                <SelectItem value="B">Section B</SelectItem>
-                <SelectItem value="C">Section C</SelectItem>
-                <SelectItem value="D">Section D</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
+          <DropdownCombo sendData={handleDataFromChild} setLoading={setLoading}/>
           <div className="mt-6 space-y-4">
             {loading && (
               <div className="flex items-center justify-center py-8">

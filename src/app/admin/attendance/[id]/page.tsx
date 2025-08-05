@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button"
 import { Calendar } from "@/components/ui/calendar"
 import { toast } from "sonner"
 import { format } from "date-fns"
-
 interface AttendanceRecord {
   date: string
   status: "present" | "absent"

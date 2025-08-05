@@ -2,7 +2,7 @@ import mongoose from "mongoose"
 
 const attendanceSchema = new mongoose.Schema({
   student_id: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: String,
     ref: "Student",
     required: true,
   },
